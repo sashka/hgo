@@ -1,0 +1,21 @@
+Do:
+1. Initial set of commands:
+    - root [done]
+    - branch [done]
+    - status [done]
+    - .hgignore support [done]
+
+Don't:
+1. No i18n, only English to be supported.
+2. No colored output.
+
+Stages:
+0. The dumbest proof-of-concept read-only hgo tool.
+1. Repo and UI types, more read only commands. May be even web server, and VFS.
+2. Add profiling for everything instead of --profile option (See https://github.com/golang/go/wiki/Diagnostics, https://blog.golang.org/profiling-go-programs)
+3. Plugins.
+4. Everything related to write and update repo.
+
+
+Notes:
+Switch to https://github.com/hashicorp/go-immutable-radix once I'm ready to write operations.
