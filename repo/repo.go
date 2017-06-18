@@ -11,26 +11,27 @@ type Repo struct {
 }
 
 // findRepositoryRoot looks up the directory tree from given path to find a repo root (".hg" directory).
-func findRepositoryRoot(dir string) (found bool, root string) {
-	prev := dir
+func findRepositoryRoot(path string) (string, error) {
+	start := path
+	prev := path
 	for {
-		info, err := os.Stat(filepath.Join(dir, ".hg"))
+		info, err := os.Stat(filepath.Join(path, ".hg"))
 		if err == nil && info.IsDir() {
-			return true, dir
+			return path, nil
 		}
 
-		prev = dir
-		dir = filepath.Dir(dir)
-		if prev == dir || dir == "." {
-			return false, ""
+		prev = path
+		path = filepath.Dir(path)
+		if prev == path || path == "." {
+			return "", fmt.Errorf("no repository found in '%s' (.hg not found)", start)
 		}
 	}
 }
 
 func Open(path string) (*Repo, error) {
-	found, root := findRepositoryRoot(path)
-	if !found {
-		return nil, fmt.Errorf("no repository found in '%s' (.hg not found)", path)
+	root, err := findRepositoryRoot(path)
+	if err != nil {
+		return nil, err
 	}
 
 	return &Repo{
