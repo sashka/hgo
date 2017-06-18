@@ -81,14 +81,12 @@ type DirStateFileInfo struct {
 func (c *DebugDirStateCommand) Run(args []string) int {
 	wd, err := os.Getwd()
 	if err != nil {
-		fmt.Printf("abort: error getting current working directory: %s", err)
-		return 255
+		return Abort("error getting current working directory: %s", err)
 	}
 
 	repo, err := repo.Open(wd)
 	if err != nil {
-		fmt.Printf("abort: %s!\n", err)
-		return 255
+		return Abort("%s!\n", err)
 	}
 
 	// All the previous code ^^^ to be removed completely on stage 1.
@@ -96,23 +94,20 @@ func (c *DebugDirStateCommand) Run(args []string) int {
 	path := filepath.Join(repo.RootDir, ".hg", "dirstate")
 	f, err := os.Open(path)
 	if err != nil {
-		fmt.Printf("abort: %s!\n", err)
-		return 255
+		return Abort("%s!\n", err)
 	}
 	defer f.Close()
 
 	finfo, err := f.Stat()
 	if err != nil {
-		fmt.Printf("abort: %s!\n", err)
-		return 255
+		return Abort("%s!\n", err)
 	}
 
 	// read parents
-	parent1 := readNextBytes(f, 20)
-	parent2 := readNextBytes(f, 20)
-
-	fmt.Printf("parent1: %x\n", parent1)
-	fmt.Printf("parent2: %x\n", parent2)
+	_ = readNextBytes(f, 20)
+	_ = readNextBytes(f, 20)
+	// fmt.Printf("parent1: %x\n", parent1)
+	// fmt.Printf("parent2: %x\n", parent2)
 
 	fileTree := radix.New()
 	copyTree := radix.New()

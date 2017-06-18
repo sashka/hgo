@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"strings"
-
 	"path/filepath"
+	"strings"
 
 	"github.com/sashka/hgo/repo"
 )
@@ -18,14 +17,12 @@ type BranchCommand struct {
 func (c *BranchCommand) Run(args []string) int {
 	wd, err := os.Getwd()
 	if err != nil {
-		fmt.Printf("abort: error getting current working directory: %s", err)
-		return 255
+		return Abort("error getting current working directory: %s", err)
 	}
 
 	repo, err := repo.Open(wd)
 	if err != nil {
-		fmt.Printf("abort: %s!\n", err)
-		return 255
+		return Abort("%s!\n", err)
 	}
 
 	// All the previous code ^^^ to be removed completely on stage 1.
@@ -53,7 +50,7 @@ func (c *BranchCommand) Run(args []string) int {
 
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
-		fmt.Printf("abort: %s!\n", err)
+		return Abort("%s!\n", err)
 	}
 	branch := strings.TrimSpace(string(b))
 

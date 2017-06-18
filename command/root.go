@@ -15,14 +15,12 @@ type RootCommand struct {
 func (c *RootCommand) Run(args []string) int {
 	wd, err := os.Getwd()
 	if err != nil {
-		fmt.Printf("abort: error getting current working directory: %s", err)
-		return 255
+		return Abort("error getting current working directory: %s", err)
 	}
 
 	repo, err := repo.Open(wd)
 	if err != nil {
-		fmt.Printf("abort: %s!\n", err)
-		return 255
+		return Abort("%s!\n", err)
 	}
 
 	fmt.Println(repo.RootDir)

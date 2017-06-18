@@ -295,14 +295,12 @@ func (c *StatusCommand) Run(args []string) int {
 
 	wd, err := os.Getwd()
 	if err != nil {
-		fmt.Printf("abort: error getting current working directory: %s", err)
-		return 255
+		return Abort("error getting current working directory: %s", err)
 	}
 
 	repo, err := repo.Open(wd)
 	if err != nil {
-		fmt.Printf("abort: %s!\n", err)
-		return 255
+		return Abort("%s!\n", err)
 	}
 
 	// All the previous code ^^^ to be removed completely on stage 1.
@@ -310,15 +308,13 @@ func (c *StatusCommand) Run(args []string) int {
 	path := filepath.Join(repo.RootDir, ".hg", "dirstate")
 	f, err := os.Open(path)
 	if err != nil {
-		fmt.Printf("abort: %s!\n", err)
-		return 255
+		return Abort("%s!\n", err)
 	}
 	defer f.Close()
 
 	finfo, err := f.Stat()
 	if err != nil {
-		fmt.Printf("abort: %s!\n", err)
-		return 255
+		return Abort("%s!\n", err)
 	}
 
 	// skip parents
@@ -369,8 +365,7 @@ func (c *StatusCommand) Run(args []string) int {
 	// step 0: read .hgignore
 	ignoreMatchers, err := parseHgIgnore(filepath.Join(repo.RootDir, ".hgignore"))
 	if err != nil {
-		fmt.Printf("abort: %s!\n", err)
-		return 255
+		return Abort("%s!\n", err)
 	}
 
 	// step 1: find all explicit files

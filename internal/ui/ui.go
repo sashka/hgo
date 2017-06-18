@@ -1,9 +1,7 @@
 package ui
 
 import (
-	"bufio"
 	"io"
-	"sync"
 )
 
 // The UI is a basic UI that reads and writes from a standard Go reader
@@ -13,7 +11,4 @@ type UI struct {
 	Reader      io.Reader
 	Writer      io.Writer
 	ErrorWriter io.Writer
-	l           sync.Mutex
-	interrupted bool
-	scanner     *bufio.Scanner
 }

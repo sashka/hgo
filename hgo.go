@@ -10,7 +10,7 @@
 //               aa,    ,88
 //                "Y8bbdP"
 //
-// (c) 2017, Alexander Saltanov <asd@mokote.com>
+// (c) 2017-2019, Alexander Saltanov <asd@mokote.com>
 //
 
 package main
